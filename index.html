@@ -1,948 +1,1470 @@
-
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>מצנזר כתוביות חרדי</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מצנזר כתוביות </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#f4f6f8;
-      --card:#ffffff;
-      --ink:#1f2937;
-      --muted:#6b7280;
-      --border:#d1d5db;
-      --accent:#2563eb;
-      --accent-2:#1d4ed8;
-      --ok:#15803d;
-      --warn:#b45309;
-      --danger:#b91c1c;
-      --soft:#eef2ff;
+    :root {
+      --bg: #f5f6fa;
+      --surface: #ffffff;
+      --surface-2: #f8f9fc;
+      --ink: #1c1e2e;
+      --ink-2: #4a4f6a;
+      --muted: #8b91ad;
+      --border: #e4e7f0;
+      --border-2: #d0d5e8;
+      --accent: #2d3cac;
+      --accent-hover: #2230a0;
+      --accent-soft: #eef0ff;
+      --accent-text: #2d3cac;
+      --success: #0b7a5e;
+      --success-soft: #e6f7f3;
+      --warning: #c96a00;
+      --warning-soft: #fff5e6;
+      --danger: #c0243b;
+      --danger-soft: #ffeef1;
+      --changed-bg: #fffbea;
+      --changed-border: #e6a817;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 12px rgba(0,0,0,.05);
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Segoe UI,Arial,sans-serif;
-      background:var(--bg);
-      color:var(--ink);
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Heebo', 'Arial', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      direction: rtl;
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.5;
     }
-    .wrap{
-      max-width:1500px;
-      margin:0 auto;
-      padding:20px;
+
+    /* ── APP SHELL ── */
+    .app-header {
+      background: var(--accent);
+      background: linear-gradient(135deg, #1e2d9e 0%, #2d3cac 60%, #3d50c3 100%);
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
     }
-    .header{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:20px;
-      margin-bottom:16px;
-      box-shadow:0 8px 24px rgba(0,0,0,.05);
+    .app-header-icon {
+      width: 38px; height: 38px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
     }
-    h1,h2,h3{margin:0 0 10px}
-    p{margin:0 0 10px}
-    .sub{
-      color:var(--muted);
-      line-height:1.6;
+    .app-header h1 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
     }
-    .toolbar,.secondary-toolbar{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:14px;
-      align-items:center;
+    .app-header .sub {
+      font-size: 12px;
+      opacity: 0.72;
+      margin-top: 1px;
     }
-    .grid{
-      display:grid;
-      grid-template-columns:1.4fr .9fr;
-      gap:16px;
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:16px;
-      box-shadow:0 8px 24px rgba(0,0,0,.05);
+    .toolbar-sep {
+      width: 1px;
+      height: 24px;
+      background: var(--border);
+      margin: 0 2px;
     }
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(120px,1fr));
-      gap:10px;
-      margin-top:14px;
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--accent-soft);
+      border-bottom: 1px solid #d6dbf5;
+      padding: 8px 20px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
     }
-    .stat{
-      background:#f8fafc;
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:12px;
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .stat .num{
-      font-size:24px;
-      font-weight:700;
+    .stat-num {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
     }
-    .stat .label{
-      color:var(--muted);
-      font-size:13px;
+    .stat-label {
+      font-size: 12px;
+      color: var(--ink-2);
+      font-weight: 500;
     }
-    button,.file-label{
-      appearance:none;
-      border:none;
-      border-radius:10px;
-      padding:10px 14px;
-      background:var(--accent);
-      color:#fff;
-      cursor:pointer;
-      font-size:14px;
-      font-weight:600;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+    .stat-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border-2); margin: 0 2px; }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      padding: 7px 20px;
+      font-size: 12px;
+      color: var(--muted);
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    button:hover,.file-label:hover{background:var(--accent-2)}
-    button.secondary{
-      background:#e5e7eb;
-      color:#111827;
+    .status-bar.ok { color: var(--success); }
+    .status-bar.warn { color: var(--warning); }
+
+    /* ── TABS ── */
+    .tabs {
+      background: var(--surface);
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      padding: 0 20px;
+      gap: 0;
     }
-    button.secondary:hover{background:#d1d5db}
-    button.success{background:var(--ok)}
-    button.warning{background:var(--warn)}
-    button.danger{background:var(--danger)}
-    button:disabled{
-      opacity:.55;
-      cursor:not-allowed;
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      padding: 11px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'Heebo', sans-serif;
+      transition: color 0.15s;
     }
-    input[type="file"]{display:none}
-    textarea, input[type="text"], select{
-      width:100%;
-      border:1px solid var(--border);
-      border-radius:10px;
-      padding:10px 12px;
-      font-size:14px;
-      background:#fff;
-      color:var(--ink);
+    .tab-btn:hover { color: var(--accent); background: var(--accent-soft); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-count {
+      background: var(--accent);
+      color: white;
+      border-radius: 999px;
+      font-size: 10px;
+      padding: 1px 6px;
+      font-weight: 700;
+      min-width: 18px;
+      text-align: center;
     }
-    textarea{
-      min-height:540px;
-      resize:vertical;
-      font-family:Consolas,Monaco,monospace;
-      direction:ltr;
-      text-align:left;
-      line-height:1.55;
-      white-space:pre;
-      tab-size:2;
+    .tab-btn.active .tab-count { background: var(--accent); }
+
+    /* ── TAB PANELS ── */
+    .tab-panel { display: none; padding: 18px 20px; }
+    .tab-panel.active { display: block; }
+
+    /* ── LAYOUT ── */
+    .grid-2col { display: grid; grid-template-columns: 1.45fr 1fr; gap: 16px; align-items: start; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .flex-wrap { flex-wrap: wrap; }
+    .gap-6 { gap: 6px; }
+    .gap-8 { gap: 8px; }
+    .gap-10 { gap: 10px; }
+    .gap-12 { gap: 12px; }
+    .mt-12 { margin-top: 12px; }
+    .mt-16 { margin-top: 16px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mb-16 { margin-bottom: 16px; }
+    .ml-auto { margin-left: auto; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
-    .small{
-      font-size:12px;
-      color:var(--muted);
+    .card-head {
+      padding: 13px 16px 11px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      background: var(--surface-2);
     }
-    .pill{
-      display:inline-block;
-      padding:4px 8px;
-      border-radius:999px;
-      background:var(--soft);
-      color:#3730a3;
-      font-size:12px;
-      font-weight:700;
+    .card-body { padding: 14px 16px; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 8px 13px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Heebo', sans-serif;
+      transition: background 0.12s, transform 0.08s;
+      white-space: nowrap;
+      line-height: 1;
     }
-    .row{
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr auto;
-      gap:10px;
-      align-items:end;
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-success { background: var(--success); color: white; }
+    .btn-success:hover { background: #096350; }
+    .btn-warning { background: var(--warning); color: white; }
+    .btn-warning:hover { background: #b55f00; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #a81f33; }
+    .btn-ghost { background: transparent; color: var(--ink-2); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--surface-2); border-color: var(--border-2); }
+    .btn-sm { padding: 5px 9px; font-size: 12px; }
+    .btn-xs { padding: 3px 7px; font-size: 11px; }
+
+    /* File label */
+    input[type="file"] { display: none; }
+    .file-btn {
+      appearance: none;
+      border: 1.5px dashed var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 7px 13px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-family: 'Heebo', sans-serif;
+      transition: background 0.12s;
     }
-    .row-2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
+    .file-btn:hover { background: #dde3ff; }
+
+    /* Pill */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-text);
+      font-size: 12px;
+      font-weight: 600;
     }
-    .table-wrap{
-      max-height:640px;
-      overflow:auto;
-      border:1px solid var(--border);
-      border-radius:12px;
+    .pill-success { background: var(--success-soft); color: var(--success); }
+    .pill-warn { background: var(--warning-soft); color: var(--warning); }
+
+    /* ── FORM ELEMENTS ── */
+    input[type="text"], select, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 13px;
+      background: var(--surface);
+      color: var(--ink);
+      font-family: 'Heebo', sans-serif;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:13px;
-      background:#fff;
+    input[type="text"]:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(45,60,172,0.1);
     }
-    thead th{
-      position:sticky;
-      top:0;
-      background:#f8fafc;
-      z-index:1;
-      text-align:right;
+    label.form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
-    th,td{
-      border-bottom:1px solid #e5e7eb;
-      padding:10px 8px;
-      vertical-align:top;
+
+    /* ── EDITOR TEXTAREA ── */
+    #editor {
+      min-height: 480px;
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      direction: ltr;
+      text-align: left;
+      font-size: 12.5px;
+      line-height: 1.65;
+      resize: vertical;
+      background: #fdfdfe;
     }
-    .badge{
-      display:inline-block;
-      padding:3px 7px;
-      border-radius:999px;
-      font-size:11px;
-      background:#f3f4f6;
+
+    /* ── DIFF VIEW ── */
+    #diffView {
+      min-height: 480px;
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      direction: ltr;
+      text-align: left;
+      font-size: 12.5px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      background: #fdfdfe;
+      overflow-y: auto;
     }
-    .reason{
-      color:var(--muted);
-      line-height:1.5;
+    .change-mark {
+      background: var(--changed-bg);
+      border-bottom: 2px solid var(--changed-border);
+      border-radius: 3px;
+      padding: 0 2px;
+      cursor: help;
+      font-weight: 500;
     }
-    .log-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
+    .block-changed { background: #fffdf0; border-radius: 4px; padding: 2px 4px; margin: 1px 0; display: block; }
+
+    /* ── ADD RULE FORM ── */
+    .add-rule-strip {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
     }
-    .log-actions button{
-      padding:6px 9px;
-      font-size:12px;
+    .add-rule-strip .strip-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-2);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    details{
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:12px;
-      background:#fafafa;
+    .form-grid-5 {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 0.9fr 1fr auto;
+      gap: 8px;
+      align-items: end;
     }
-    summary{
-      cursor:pointer;
-      font-weight:700;
+
+    /* ── NOTICE ── */
+    .notice {
+      border-right: 3px solid var(--accent);
+      background: var(--accent-soft);
+      padding: 10px 12px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      color: var(--accent-text);
+      font-size: 12.5px;
+      line-height: 1.6;
     }
-    .notice{
-      border-right:4px solid var(--accent);
-      background:#eff6ff;
-      padding:12px;
-      border-radius:10px;
-      color:#1e3a8a;
-      margin-top:12px;
-      line-height:1.6;
+
+    /* ── TABLE BASE ── */
+    .table-scroll { overflow-x: auto; }
+    .table-scroll-y { overflow-y: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
     }
-    .status{
-      font-size:13px;
-      color:var(--muted);
-      margin-top:8px;
-      min-height:20px;
+    thead th {
+      position: sticky;
+      top: 0;
+      background: var(--surface-2);
+      text-align: right;
+      padding: 9px 10px;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--ink-2);
+      border-bottom: 1px solid var(--border);
+      z-index: 2;
+      white-space: nowrap;
     }
-    .highlight{
-      background:#fff7ed;
-      border:1px solid #fdba74;
-      padding:10px;
-      border-radius:10px;
-      line-height:1.6;
+    tbody td {
+      padding: 7px 10px;
+      border-bottom: 1px solid #f0f2f8;
+      vertical-align: middle;
     }
-    .muted-box{
-      margin-top:10px;
-      background:#f9fafb;
-      border:1px dashed var(--border);
-      padding:10px;
-      border-radius:10px;
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--surface-2); }
+
+    /* ── DICT TABLE INPUTS ── */
+    .dict-inp {
+      width: 100%;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      padding: 4px 7px;
+      font-size: 12.5px;
+      background: transparent;
+      font-family: 'Heebo', sans-serif;
+      color: var(--ink);
     }
-    @media (max-width:1100px){
-      .grid{grid-template-columns:1fr}
-      .stats{grid-template-columns:repeat(2,minmax(120px,1fr))}
-      .row,.row-2{grid-template-columns:1fr}
-      textarea{min-height:420px}
+    .dict-inp:focus {
+      border-color: var(--accent);
+      background: white;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(45,60,172,0.1);
+    }
+    .dict-inp:hover { border-color: var(--border-2); background: white; }
+
+    /* ── CATEGORY BADGES ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .b-קללה    { background: #fde8ec; color: #9b1c2e; }
+    .b-מיניות  { background: #fce7f3; color: #9d174d; }
+    .b-גנאי    { background: #fff0e6; color: #a85400; }
+    .b-צניעות  { background: #fefce8; color: #854d0e; }
+    .b-דת      { background: #ede9fe; color: #5b21b6; }
+    .b-סלנג    { background: #dbeafe; color: #1e40af; }
+    .b-אנגלית  { background: #dcfce7; color: #14532d; }
+    .b-אלימות  { background: #fde8ec; color: #7f1d1d; }
+    .b-ביטוי   { background: #e0f2fe; color: #0c4a6e; }
+    .b-יחסים   { background: #fdf4ff; color: #701a75; }
+    .b-מותאם   { background: #f0fdf4; color: #14532d; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .filter-bar input[type="text"] { max-width: 210px; flex: 1; }
+    .filter-bar select { width: auto; max-width: 160px; }
+    .filter-count { font-size: 12px; color: var(--muted); }
+
+    /* ── REPORT ACTIONS ── */
+    .r-actions { display: flex; gap: 4px; }
+
+    /* ── QUICK REPORT ── */
+    .qr-row {
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .qr-row:last-child { border-bottom: none; }
+    .qr-orig { color: var(--danger); font-weight: 600; }
+    .qr-arrow { color: var(--muted); font-size: 11px; }
+    .qr-repl { color: var(--success); font-weight: 600; }
+    .qr-time { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* ── ENCODING BADGE ── */
+    .enc-badge {
+      font-size: 11px;
+      background: var(--success-soft);
+      color: var(--success);
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-weight: 600;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--muted);
+    }
+    .empty-state svg { opacity: 0.25; margin-bottom: 8px; }
+    .empty-state p { font-size: 13px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .grid-2col { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .form-grid-5 { grid-template-columns: 1fr 1fr; }
+      .app-header h1 { font-size: 16px; }
+      .tab-btn { padding: 10px 12px; font-size: 12px; }
+    }
+    @media (max-width: 500px) {
+      .form-grid-5 { grid-template-columns: 1fr; }
+      .stats-bar { gap: 12px; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="header">
-      <h1>מצנזר כתוביות לציבור החרדי</h1>
-      <p class="sub">
-        כלי סטטי שמתאים ל-GitHub Pages: העלאת קובץ SRT, צנזור לפי מילון וכללים, דוח שינויים עם זמן מדויק,
-        עריכה ידנית, שמירת תיקונים למילון המותאם אישית, וייצוא מחדש בלי לשבור את הסנכרון.
-      </p>
 
-      <div class="toolbar">
-        <label class="file-label" for="fileInput">העלה קובץ SRT</label>
-        <input type="file" id="fileInput" accept=".srt" />
-        <button id="runBtn" class="success" disabled>צנזר עכשיו</button>
-        <button id="downloadBtn" disabled>ייצא קובץ SRT</button>
-        <button id="downloadDictBtn" class="secondary">ייצא מילון מותאם</button>
-        <button id="clearCustomBtn" class="danger">נקה מילון מותאם</button>
+<!-- ═══ HEADER ═══ -->
+<div class="app-header">
+  <div class="app-header-icon">📺</div>
+  <div>
+    <h1>מצנזר כתוביות </h1>
+    <div class="sub">כלי סטטי | GitHub Pages | תמיכה מלאה בעברית ו-Windows-1255</div>
+  </div>
+</div>
+
+<!-- ═══ TOOLBAR ═══ -->
+<div class="toolbar">
+  <label class="file-btn" for="fileInput">⬆ העלאת קובץ SRT</label>
+  <input type="file" id="fileInput" accept=".srt">
+  <div class="toolbar-sep"></div>
+  <button class="btn btn-success" id="runBtn" disabled>▶ צנזר מחדש</button>
+  <button class="btn btn-primary" id="downloadBtn" disabled>⬇ ייצוא SRT</button>
+  <div class="toolbar-sep"></div>
+  <span class="pill" id="fileNamePill">לא נטען קובץ</span>
+  <span class="enc-badge" id="encBadge" style="display:none"></span>
+</div>
+
+<!-- ═══ STATS BAR ═══ -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-num" id="statBlocks">0</span>
+    <span class="stat-label">בלוקים</span>
+  </div>
+  <div class="stat-dot"></div>
+  <div class="stat">
+    <span class="stat-num" id="statChanges">0</span>
+    <span class="stat-label">שינויים</span>
+  </div>
+  <div class="stat-dot"></div>
+  <div class="stat">
+    <span class="stat-num" id="statRules">0</span>
+    <span class="stat-label">כללים במילון</span>
+  </div>
+</div>
+
+<!-- ═══ STATUS BAR ═══ -->
+<div class="status-bar" id="statusBar">מוכן לעבודה — העלה קובץ SRT להתחלה.</div>
+
+<!-- ═══ TABS ═══ -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="editor">✏️ עורך</button>
+  <button class="tab-btn" data-tab="dict">📚 מילון <span class="tab-count" id="tcDict">0</span></button>
+  <button class="tab-btn" data-tab="report">📋 דוח שינויים <span class="tab-count" id="tcReport">0</span></button>
+</div>
+
+<!-- ═══════════════ TAB: EDITOR ═══════════════ -->
+<div class="tab-panel active" id="panel-editor">
+  <div class="grid-2col">
+
+    <!-- LEFT: editor -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card">
+        <div class="card-head">
+          <span>📝 עורך כתוביות</span>
+          <button class="btn btn-ghost btn-sm ml-auto" id="toggleViewBtn">👁 הצג שינויים מסומנים</button>
+          <button class="btn btn-ghost btn-sm" id="resetEditorBtn" disabled>↩ שחזר</button>
+        </div>
+        <div class="card-body" style="padding-top:10px">
+          <textarea id="editor" placeholder="הטקסט יופיע כאן לאחר העלאת קובץ SRT..."></textarea>
+          <div id="diffView" style="display:none"></div>
+        </div>
       </div>
 
-      <div class="stats">
-        <div class="stat">
-          <div class="num" id="statBlocks">0</div>
-          <div class="label">בלוקי כתוביות</div>
-        </div>
-        <div class="stat">
-          <div class="num" id="statChanges">0</div>
-          <div class="label">החלפות</div>
-        </div>
-        <div class="stat">
-          <div class="num" id="statRules">0</div>
-          <div class="label">כללי צנזור פעילים</div>
-        </div>
-        <div class="stat">
-          <div class="num" id="statCustom">0</div>
-          <div class="label">כללים מותאמים אישית</div>
+      <!-- Quick add to dictionary -->
+      <div class="card">
+        <div class="card-head">➕ הוספה מהירה למילון</div>
+        <div class="card-body">
+          <div class="add-rule-strip">
+            <div class="form-grid-5">
+              <div>
+                <label class="form-label">מקור (מה לצנזר)</label>
+                <input type="text" id="qAddOrig" placeholder="מילה מקורית">
+              </div>
+              <div>
+                <label class="form-label">החלפה</label>
+                <input type="text" id="qAddRepl" placeholder="מילה נקייה">
+              </div>
+              <div>
+                <label class="form-label">קטגוריה</label>
+                <select id="qAddCat">
+                  <option>קללה</option><option>מיניות</option><option>גנאי</option>
+                  <option>צניעות</option><option>דת</option><option>סלנג</option>
+                  <option>אנגלית</option><option>אלימות</option><option>ביטוי</option>
+                  <option selected>מותאם</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">סיבה (אופציונלי)</label>
+                <input type="text" id="qAddReason" placeholder="תיאור קצר">
+              </div>
+              <div>
+                <label class="form-label">&nbsp;</label>
+                <button class="btn btn-warning" id="qAddBtn">הוסף למילון</button>
+              </div>
+            </div>
+            <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+              <button class="btn btn-ghost btn-sm" id="grabSelBtn">📌 קח מהטקסט המסומן</button>
+              <span style="font-size:12px;color:var(--muted)">סמן מילה בעורך לעיל ולחץ כאן</span>
+            </div>
+          </div>
+          <div class="notice mt-12">
+            💡 <strong>טיפ:</strong> סמן מילה בעורך → "קח מהטקסט המסומן" → הזן החלפה → "הוסף למילון". הכלל יישמר ויופעל מיד.
+          </div>
         </div>
       </div>
-
-      <div class="status" id="statusText">מוכן לעבודה.</div>
     </div>
 
-    <div class="grid">
+    <!-- RIGHT: quick report -->
+    <div>
       <div class="card">
-        <h2>עורך כתוביות</h2>
-        <p class="small">אפשר לערוך ידנית את הטקסט לפני הייצוא. הייצוא שומר את קובץ ה-SRT כמו שהוא מופיע בתיבה.</p>
-        <div class="secondary-toolbar">
-          <button id="reparseBtn" class="secondary" disabled>זהה מחדש שינויים מהעורך</button>
-          <button id="resetEditorBtn" class="secondary" disabled>חזור לגרסה המצונזרת האחרונה</button>
-          <span class="pill" id="fileNamePill">לא נטען קובץ</span>
+        <div class="card-head">
+          <span>📋 שינויים אחרונים</span>
+          <button class="btn btn-ghost btn-sm ml-auto" onclick="switchTab('report')">כל הדוח ←</button>
         </div>
-        <textarea id="editor" placeholder="כאן יופיע קובץ הכתוביות לאחר העלאה..."></textarea>
-
-        <div class="notice">
-          טיפ פרקטי: אם מצאת מילה שלא נתפסה, סמן אותה בעורך, מלא את השדות למטה ולחץ
-          <strong>החל + שמור למילון</strong>. בפעם הבאה היא תצונזר אוטומטית על אותו דפדפן.
+        <div class="card-body" style="padding:0">
+          <div id="quickReport" style="max-height:620px;overflow-y:auto;padding:0 14px">
+            <div class="empty-state">
+              <p>לאחר עיבוד, השינויים יופיעו כאן</p>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <details style="margin-top:14px" open>
-          <summary>הוספת כלל חדש למילון</summary>
-          <div class="row" style="margin-top:12px">
-            <div>
-              <label class="small">מילה / ביטוי מקורי</label>
-              <input type="text" id="manualOriginal" placeholder="למשל: כוסית" />
-            </div>
-            <div>
-              <label class="small">החלפה נקייה</label>
-              <input type="text" id="manualReplacement" placeholder="למשל: יפה" />
-            </div>
-            <div>
-              <label class="small">סיבת צנזור</label>
-              <select id="manualReason">
-                <option value="קללה בוטה">קללה בוטה</option>
-                <option value="מילת גנאי">מילת גנאי</option>
-                <option value="תוכן לא צנוע">תוכן לא צנוע</option>
-                <option value="ביטוי מיני">ביטוי מיני</option>
-                <option value="שפה שאינה מתאימה">שפה שאינה מתאימה</option>
-                <option value="לשון דתית רגישה">לשון דתית רגישה</option>
-              </select>
-            </div>
-            <div>
-              <button id="applyManualBtn" class="warning">החל + שמור למילון</button>
-            </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TAB: DICTIONARY ═══════════════ -->
+<div class="tab-panel" id="panel-dict">
+  <div class="card">
+    <div class="card-head">
+      📚 מילון כללי צנזור
+      <span style="font-size:12px;font-weight:400;color:var(--muted);margin-right:8px">ניתן לערוך כל שדה ישירות בטבלה</span>
+      <button class="btn btn-danger btn-sm ml-auto" id="resetDictBtn">🔄 אפס לברירת מחדל</button>
+    </div>
+    <div class="card-body">
+
+      <!-- Add new rule form -->
+      <div class="add-rule-strip mb-16">
+        <div class="strip-title">+ הוסף כלל חדש למילון</div>
+        <div class="form-grid-5">
+          <div>
+            <label class="form-label">מקור</label>
+            <input type="text" id="newOrig" placeholder="מילה לצנזר">
           </div>
-          <div class="muted-box small">
-            אפשר לסמן טקסט בעורך, ללחוץ על "קח מהטקסט המסומן", ואז להכניס את ההחלפה הרצויה.
-            הכלל החדש יישמר ב-localStorage ויטען אוטומטית בביקור הבא.
+          <div>
+            <label class="form-label">החלפה</label>
+            <input type="text" id="newRepl" placeholder="מילה נקייה">
           </div>
-          <div class="secondary-toolbar">
-            <button id="grabSelectionBtn" class="secondary">קח מהטקסט המסומן</button>
+          <div>
+            <label class="form-label">קטגוריה</label>
+            <select id="newCat">
+              <option>קללה</option><option>מיניות</option><option>גנאי</option>
+              <option>צניעות</option><option>דת</option><option>סלנג</option>
+              <option>אנגלית</option><option>אלימות</option><option>ביטוי</option>
+              <option>מותאם</option>
+            </select>
           </div>
-        </details>
+          <div>
+            <label class="form-label">סיבה</label>
+            <input type="text" id="newReason" placeholder="סיבת הצנזור">
+          </div>
+          <div>
+            <label class="form-label">&nbsp;</label>
+            <button class="btn btn-primary" id="addRuleBtn">➕ הוסף</button>
+          </div>
+        </div>
       </div>
 
-      <div class="card">
-        <h2>דוח שינויים</h2>
-        <p class="small">
-          הדוח מציג בלוק, זמן התחלה, מקור, החלפה, סוג צנזור, וסיבה. אפשר גם לשמור כל החלפה למילון המותאם.
-        </p>
-
-        <div class="secondary-toolbar">
-          <input type="text" id="filterInput" placeholder="סינון לפי מילה / זמן / סיבה..." />
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>מיקום</th>
-                <th>מקור</th>
-                <th>החלפה</th>
-                <th>סוג</th>
-                <th>סיבה</th>
-                <th>פעולות</th>
-              </tr>
-            </thead>
-            <tbody id="logBody">
-              <tr><td colspan="6" class="small">עוד לא בוצע עיבוד.</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <details style="margin-top:14px">
-          <summary>מילון מותאם אישית פעיל</summary>
-          <div id="customDictView" class="small" style="margin-top:12px">אין עדיין כללים מותאמים אישית.</div>
-        </details>
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <input type="text" id="dictSearch" placeholder="🔍 חיפוש לפי מקור / החלפה / סיבה...">
+        <select id="dictCatFilter" style="width:auto;max-width:170px">
+          <option value="">כל הקטגוריות</option>
+          <option>קללה</option><option>מיניות</option><option>גנאי</option>
+          <option>צניעות</option><option>דת</option><option>סלנג</option>
+          <option>אנגלית</option><option>אלימות</option><option>ביטוי</option>
+          <option>יחסים</option><option>מותאם</option>
+        </select>
+        <span class="filter-count" id="dictCount"></span>
       </div>
+
+      <!-- Dictionary table -->
+      <div class="table-scroll" style="border:1px solid var(--border);border-radius:var(--radius);max-height:580px;overflow-y:auto">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:185px">מקור</th>
+              <th style="width:170px">החלפה</th>
+              <th style="width:130px">קטגוריה</th>
+              <th>סיבה</th>
+              <th style="width:56px;text-align:center">מחק</th>
+            </tr>
+          </thead>
+          <tbody id="dictBody"></tbody>
+        </table>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <script>
-    const BUILTIN_RULES = [
-      // קללות וביטויי זעם
-      { pattern: "בן זונה", replacement: "נבל", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "בני זונות", replacement: "נבלים", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "בת זונה", replacement: "רעה", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "כוס אמק", replacement: "אוי ואבוי", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "כוסאמק", replacement: "אוי ואבוי", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "קוס אמק", replacement: "אוי ואבוי", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "פאקינג", replacement: "ממש", reason: "שפה שאינה מתאימה", category: "סלנג" },
-      { pattern: "פאק", replacement: "לעזאזל", reason: "שפה שאינה מתאימה", category: "סלנג" },
-      { pattern: "פאקן", replacement: "ממש", reason: "שפה שאינה מתאימה", category: "סלנג" },
-      { pattern: "שיט", replacement: "אוף", reason: "שפה שאינה מתאימה", category: "סלנג" },
-      { pattern: "בולשיט", replacement: "שטויות", reason: "שפה שאינה מתאימה", category: "סלנג" },
-      { pattern: "דאמנ", replacement: "לעזאזל", reason: "שפה שאינה מתאימה", category: "סלנג" },
-      { pattern: "damn", replacement: "לעזאזל", reason: "שפה שאינה מתאימה", category: "אנגלית" },
-      { pattern: "shit", replacement: "אוף", reason: "שפה שאינה מתאימה", category: "אנגלית" },
-      { pattern: "fuck", replacement: "לעזאזל", reason: "שפה שאינה מתאימה", category: "אנגלית" },
-      { pattern: "חרא", replacement: "לעזאזל", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "החרא", replacement: "הדבר הגרוע", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "מחורבן", replacement: "גרוע", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "מחורבנת", replacement: "גרועה", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "לעזאזל", replacement: "אוף", reason: "שפה שאינה מתאימה", category: "ביטוי" },
+<!-- ═══════════════ TAB: REPORT ═══════════════ -->
+<div class="tab-panel" id="panel-report">
+  <div class="card">
+    <div class="card-head">📋 דוח שינויים מפורט</div>
+    <div class="card-body">
 
-      // גנאי והשפלות
-      { pattern: "מטומטם", replacement: "טיפש", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "מטומטמת", replacement: "טיפשה", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "מטומטמים", replacement: "טיפשים", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "מטומטמות", replacement: "טיפשות", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "מפגר", replacement: "טיפש", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "מפגרת", replacement: "טיפשה", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "אידיוט", replacement: "שוטה", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "אידיוטית", replacement: "שוטה", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "דפוק", replacement: "טיפש", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "דפוקה", replacement: "טיפשה", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "דפוקים", replacement: "טיפשים", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "מניאק", replacement: "רשע", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "מניאקית", replacement: "רשעה", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "כלבה", replacement: "מרשעת", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "כלב", replacement: "רשע", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "טמבל", replacement: "טיפש", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "טיפש מטופש", replacement: "טיפש", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "חולירע", replacement: "רשע", reason: "מילת גנאי", category: "גנאי" },
+      <div class="filter-bar">
+        <input type="text" id="repSearch" placeholder="🔍 חיפוש לפי מקור / זמן / קטגוריה...">
+        <select id="repCatFilter" style="width:auto;max-width:170px">
+          <option value="">כל הקטגוריות</option>
+          <option>קללה</option><option>מיניות</option><option>גנאי</option>
+          <option>צניעות</option><option>דת</option><option>סלנג</option>
+          <option>אנגלית</option><option>אלימות</option><option>ביטוי</option>
+          <option>מותאם</option>
+        </select>
+        <span class="filter-count" id="repCount"></span>
+      </div>
 
-      // מיניות ותוכן לא צנוע
-      { pattern: "סקס", replacement: "יחסים", reason: "ביטוי מיני", category: "מיניות" },
-      { pattern: "סקסי", replacement: "מרשים", reason: "תוכן לא צנוע", category: "מיניות" },
-      { pattern: "סקסית", replacement: "מרשימה", reason: "תוכן לא צנוע", category: "מיניות" },
-      { pattern: "סקסים", replacement: "יחסים", reason: "ביטוי מיני", category: "מיניות" },
-      { pattern: "לשכב", replacement: "להיות יחד", reason: "ביטוי מיני", category: "מיניות" },
-      { pattern: "שכבנו", replacement: "היינו יחד", reason: "ביטוי מיני", category: "מיניות" },
-      { pattern: "שכבה איתו", replacement: "הייתה איתו", reason: "ביטוי מיני", category: "מיניות" },
-      { pattern: "שכב איתה", replacement: "היה איתה", reason: "ביטוי מיני", category: "מיניות" },
-      { pattern: "מאהב", replacement: "ידיד", reason: "תוכן לא צנוע", category: "יחסים" },
-      { pattern: "מאהבת", replacement: "ידידה", reason: "תוכן לא צנוע", category: "יחסים" },
-      { pattern: "רומן", replacement: "קשר", reason: "תוכן לא צנוע", category: "יחסים" },
-      { pattern: "רומן סודי", replacement: "קשר סודי", reason: "תוכן לא צנוע", category: "יחסים" },
-      { pattern: "לוהטת", replacement: "מרשימה", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "לוהט", replacement: "מרשים", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "כוסית", replacement: "יפה", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "כוסיות", replacement: "יפות", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "חתיכה", replacement: "נאה", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "חתיך", replacement: "נאה", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "כוסון", replacement: "נאה", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "מחשוף", replacement: "לבוש לא צנוע", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "חשוף", replacement: "גלוי", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "חשופה", replacement: "גלויה", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "עירום", replacement: "לבוש חסר", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "עירומה", replacement: "בלבוש חסר", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "ביקיני", replacement: "לבוש ים", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "חזייה", replacement: "בגד", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "תחתונים", replacement: "בגד", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "נשיקה", replacement: "חיבוק", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "נשק אותי", replacement: "חיבק אותי", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "מזמוז", replacement: "קרבה", reason: "תוכן לא צנוע", category: "צניעות" },
-      { pattern: "פורנו", replacement: "תוכן פסול", reason: "ביטוי מיני", category: "מיניות" },
-      { pattern: "פורנוגרפיה", replacement: "תוכן פסול", reason: "ביטוי מיני", category: "מיניות" },
+      <div class="table-scroll" style="border:1px solid var(--border);border-radius:var(--radius);max-height:600px;overflow-y:auto">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:130px">מיקום</th>
+              <th style="width:210px">מקור ← החלפה</th>
+              <th style="width:105px">קטגוריה</th>
+              <th>סיבה</th>
+              <th style="width:130px">פעולות</th>
+            </tr>
+          </thead>
+          <tbody id="repBody">
+            <tr><td colspan="5" class="empty-state"><p>עוד לא בוצע עיבוד</p></td></tr>
+          </tbody>
+        </table>
+      </div>
 
-      // מילים בוטות מפורשות
-      { pattern: "זונה", replacement: "מופקרת", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "הזונה", replacement: "המופקרת", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "שרמוטה", replacement: "מופקרת", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "זין", replacement: "הבל", reason: "ביטוי מיני", category: "מיניות" },
-      { pattern: "הזין", replacement: "ההבל", reason: "ביטוי מיני", category: "מיניות" },
-      { pattern: "זיונים", replacement: "מעשים פסולים", reason: "ביטוי מיני", category: "מיניות" },
-      { pattern: "להזדיין", replacement: "להסתלק", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "מזדיין", replacement: "ארור", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "מזדיינת", replacement: "ארורה", reason: "קללה בוטה", category: "קללה" },
-      { pattern: "מזדיינים", replacement: "ארורים", reason: "קללה בוטה", category: "קללה" },
+    </div>
+  </div>
+</div>
 
-      // אלימות מילולית
-      { pattern: "אני ארצח אותך", replacement: "אני אסגור איתך חשבון", reason: "שפה שאינה מתאימה", category: "אלימות" },
-      { pattern: "תהרוג אותו", replacement: "תעצור אותו", reason: "שפה שאינה מתאימה", category: "אלימות" },
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════ -->
+<script>
+// ════════════════════════════════════════
+// BUILTIN RULES
+// ════════════════════════════════════════
+const BUILTIN_RULES = [
+  // ── קללות בוטות ──
+  { pattern:"בן זונה",          replacement:"נבל",                reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"בני זונות",        replacement:"נבלים",              reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"בת זונה",          replacement:"רעה",                reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"כוס אמק",          replacement:"אוי ואבוי",          reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"כוסאמק",           replacement:"אוי ואבוי",          reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"קוס אמק",          replacement:"אוי ואבוי",          reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"זונה",             replacement:"מופקרת",             reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"הזונה",            replacement:"המופקרת",            reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"שרמוטה",           replacement:"מופקרת",             reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"שרמוטות",          replacement:"מופקרות",            reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"להזדיין",          replacement:"להסתלק",             reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"מזדיין",           replacement:"ארור",               reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"מזדיינת",          replacement:"ארורה",              reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"מזדיינים",         replacement:"ארורים",             reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"חרא",              replacement:"שטות",               reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"החרא",             replacement:"הדבר הגרוע",         reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"מחורבן",           replacement:"גרוע",               reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"מחורבנת",          replacement:"גרועה",              reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"חרטא",             replacement:"שטות",               reason:"קללה בוטה",           category:"קללה" },
+  { pattern:"ממזר",             replacement:"נוכל",               reason:"מילת גנאי",           category:"קללה" },
+  { pattern:"ממזרים",           replacement:"נוכלים",             reason:"מילת גנאי",           category:"קללה" },
+  // ── סלנג עברי ──
+  { pattern:"פאקינג",           replacement:"ממש",                reason:"שפה שאינה מתאימה",    category:"סלנג" },
+  { pattern:"פאק",              replacement:"לעזאזל",             reason:"שפה שאינה מתאימה",    category:"סלנג" },
+  { pattern:"פאקן",             replacement:"ממש",                reason:"שפה שאינה מתאימה",    category:"סלנג" },
+  { pattern:"שיט",              replacement:"אוף",                reason:"שפה שאינה מתאימה",    category:"סלנג" },
+  { pattern:"בולשיט",           replacement:"שטויות",             reason:"שפה שאינה מתאימה",    category:"סלנג" },
+  { pattern:"דאמנ",             replacement:"לעזאזל",             reason:"שפה שאינה מתאימה",    category:"סלנג" },
+  { pattern:"לעזאזל",           replacement:"אוף",                reason:"שפה שאינה מתאימה",    category:"ביטוי" },
+  { pattern:"לכל הרוחות",       replacement:"אוף",                reason:"שפה שאינה מתאימה",    category:"ביטוי" },
+  { pattern:"לעזאזל איתך",      replacement:"עזוב אותי",          reason:"שפה שאינה מתאימה",    category:"ביטוי" },
+  // ── אנגלית ──
+  { pattern:"damn",             replacement:"goodness",           reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  { pattern:"shit",             replacement:"dang",               reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  { pattern:"fuck",             replacement:"dang",               reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  { pattern:"fucking",          replacement:"really",             reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  { pattern:"bastard",          replacement:"rogue",              reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  { pattern:"bitch",            replacement:"rogue",              reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  { pattern:"ass",              replacement:"rear",               reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  { pattern:"crap",             replacement:"nonsense",           reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  { pattern:"hell",             replacement:"heck",               reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  { pattern:"jerk",             replacement:"fool",               reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  { pattern:"idiot",            replacement:"fool",               reason:"מילת גנאי",           category:"אנגלית" },
+  { pattern:"stupid",           replacement:"unwise",             reason:"מילת גנאי",           category:"אנגלית" },
+  { pattern:"moron",            replacement:"fool",               reason:"מילת גנאי",           category:"אנגלית" },
+  { pattern:"crap",             replacement:"nonsense",           reason:"שפה שאינה מתאימה",    category:"אנגלית" },
+  // ── גנאי ──
+  { pattern:"מטומטם",          replacement:"לא חכם",             reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"מטומטמת",         replacement:"לא חכמה",            reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"מטומטמים",        replacement:"לא חכמים",           reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"מטומטמות",        replacement:"לא חכמות",           reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"מפגר",            replacement:"טיפש",               reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"מפגרת",           replacement:"טיפשה",              reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"מפגרים",          replacement:"טיפשים",             reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"אידיוט",          replacement:"שוטה",               reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"אידיוטית",        replacement:"שוטה",               reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"אידיוטים",        replacement:"שוטים",              reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"דפוק",            replacement:"פגום",               reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"דפוקה",           replacement:"פגומה",              reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"דפוקים",          replacement:"פגומים",             reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"מניאק",           replacement:"מוזר",               reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"מניאקית",         replacement:"מוזרה",              reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"כלבה",            replacement:"מרשעת",              reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"כלב",             replacement:"רשע",                reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"טמבל",            replacement:"טיפש",               reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"חולירע",          replacement:"רשע",                reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"אומלל",           replacement:"מסכן",               reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"בהמה",            replacement:"גס רוח",             reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"טיפשה",           replacement:"לא חכמה",            reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"טיפש",            replacement:"לא חכם",             reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"שפל",             replacement:"ירוד",               reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"שפלה",            replacement:"ירודה",              reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"זבל",             replacement:"פסולת",              reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"נבל",             replacement:"רשע",                reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"טינופת",          replacement:"לכלוך",              reason:"שפה שאינה מתאימה",    category:"ביטוי" },
+  { pattern:"מגעיל",           replacement:"לא נעים",            reason:"שפה שאינה מתאימה",    category:"ביטוי" },
+  { pattern:"דוחה",            replacement:"לא נעים",            reason:"שפה שאינה מתאימה",    category:"ביטוי" },
+  { pattern:"צחנה",            replacement:"ריח רע",             reason:"שפה שאינה מתאימה",    category:"ביטוי" },
+  { pattern:"נודניק",          replacement:"מטריד",              reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"פרימיטיבי",       replacement:"פשוט",               reason:"מילת גנאי",           category:"גנאי" },
+  { pattern:"פרימיטיבית",      replacement:"פשוטה",              reason:"מילת גנאי",           category:"גנאי" },
+  // ── מיניות ──
+  { pattern:"סקס",             replacement:"יחסים",              reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"סקסי",            replacement:"מרשים",              reason:"תוכן לא צנוע",        category:"מיניות" },
+  { pattern:"סקסית",           replacement:"מרשימה",             reason:"תוכן לא צנוע",        category:"מיניות" },
+  { pattern:"לשכב",            replacement:"להיות יחד",          reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"שכבנו",           replacement:"היינו יחד",          reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"שכבה איתו",       replacement:"הייתה איתו",         reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"שכב איתה",        replacement:"היה איתה",           reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"זין",             replacement:"הבל",                reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"הזין",            replacement:"ההבל",               reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"זיונים",          replacement:"מעשים פסולים",       reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"פורנו",           replacement:"תוכן פסול",          reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"פורנוגרפיה",      replacement:"תוכן פסול",          reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"אורגזמה",         replacement:"תחושה",              reason:"ביטוי מיני",          category:"מיניות" },
+  { pattern:"ערווה",           replacement:"גוף",                reason:"ביטוי מיני",          category:"מיניות" },
+  // ── צניעות ──
+  { pattern:"מאהב",            replacement:"ידיד",               reason:"תוכן לא צנוע",        category:"יחסים" },
+  { pattern:"מאהבת",           replacement:"ידידה",              reason:"תוכן לא צנוע",        category:"יחסים" },
+  { pattern:"רומן",            replacement:"קשר",                reason:"תוכן לא צנוע",        category:"יחסים" },
+  { pattern:"רומן סודי",       replacement:"קשר סודי",           reason:"תוכן לא צנוע",        category:"יחסים" },
+  { pattern:"לוהטת",           replacement:"מרשימה",             reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"לוהט",            replacement:"מרשים",              reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"כוסית",           replacement:"יפה",                reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"כוסיות",          replacement:"יפות",               reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"חתיכה",           replacement:"נאה",                reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"חתיך",            replacement:"נאה",                reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"כוסון",           replacement:"נאה",                reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"מחשוף",           replacement:"לבוש לא צנוע",       reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"עירום",           replacement:"לא לבוש",            reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"עירומה",          replacement:"לא לבושה",           reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"ביקיני",          replacement:"לבוש ים",            reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"חזייה",           replacement:"בגד",                reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"תחתונים",         replacement:"בגד",                reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"נשיקה",           replacement:"חיבוק",              reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"נשק אותי",        replacement:"חיבק אותי",          reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"מזמוז",           replacement:"קרבה",               reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"חשוף",            replacement:"גלוי",               reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"חשופה",           replacement:"גלויה",              reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"סקסאפיל",         replacement:"קסם",                reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"אירוטי",          replacement:"רגשי",               reason:"תוכן לא צנוע",        category:"צניעות" },
+  { pattern:"אירוטית",         replacement:"רגשית",              reason:"תוכן לא צנוע",        category:"צניעות" },
+  // ── אלימות ──
+  { pattern:"אני ארצח אותך",   replacement:"אני אסגור איתך חשבון", reason:"שפה אלימה",       category:"אלימות" },
+  { pattern:"תהרוג אותו",      replacement:"תעצור אותו",          reason:"שפה אלימה",          category:"אלימות" },
+  { pattern:"אהרוג אותך",      replacement:"אסגור איתך חשבון",    reason:"שפה אלימה",          category:"אלימות" },
+  { pattern:"תמות",            replacement:"עזוב אותי",           reason:"שפה אלימה",          category:"אלימות" },
+  { pattern:"להרוג",           replacement:"לעצור",               reason:"שפה אלימה",          category:"אלימות" },
+  { pattern:"אהרוס אותך",      replacement:"אסגור איתך חשבון",    reason:"שפה אלימה",          category:"אלימות" },
+  // ── דת ──
+  { pattern:"אלוהים",          replacement:"אלוקים",              reason:"לשון דתית רגישה",    category:"דת" },
+  { pattern:"לאלוהים",         replacement:"לאלוקים",             reason:"לשון דתית רגישה",    category:"דת" },
+  { pattern:"באלוהים",         replacement:"באלוקים",             reason:"לשון דתית רגישה",    category:"דת" },
+  { pattern:"מאלוהים",         replacement:"מאלוקים",             reason:"לשון דתית רגישה",    category:"דת" },
+  { pattern:"והאלוהים",        replacement:"והאלוקים",            reason:"לשון דתית רגישה",    category:"דת" },
+  { pattern:"יהוה",            replacement:"ה׳",                  reason:"לשון דתית רגישה",    category:"דת" },
+  { pattern:"ישו",             replacement:"אותו האיש",           reason:"לשון דתית רגישה",    category:"דת" },
+  { pattern:"לישו",            replacement:"לאותו האיש",          reason:"לשון דתית רגישה",    category:"דת" },
+  { pattern:"הנוצרי",          replacement:"ההוא",                reason:"לשון דתית רגישה",    category:"דת" },
+  { pattern:"כומר",            replacement:"תלמיד חכם שלהם",      reason:"לשון דתית רגישה",    category:"דת" },
+];
 
-      // דת ושמות רגישים
-      { pattern: "אלוהים", replacement: "אלוקים", reason: "לשון דתית רגישה", category: "דת" },
-      { pattern: "לאלוהים", replacement: "לאלוקים", reason: "לשון דתית רגישה", category: "דת" },
-      { pattern: "באלוהים", replacement: "באלוקים", reason: "לשון דתית רגישה", category: "דת" },
-      { pattern: "מאלוהים", replacement: "מאלוקים", reason: "לשון דתית רגישה", category: "דת" },
-      { pattern: "והאלוהים", replacement: "והאלוקים", reason: "לשון דתית רגישה", category: "דת" },
-      { pattern: "יהוה", replacement: "ה'", reason: "לשון דתית רגישה", category: "דת" },
-      { pattern: "ישו", replacement: "אותו האיש", reason: "לשון דתית רגישה", category: "דת" },
-      { pattern: "לישו", replacement: "לאותו האיש", reason: "לשון דתית רגישה", category: "דת" },
-      { pattern: "הנוצרי", replacement: "ההוא", reason: "לשון דתית רגישה", category: "דת" },
+// ════════════════════════════════════════
+// CONSTANTS & STATE
+// ════════════════════════════════════════
+const DICT_KEY = "subtitle-censor-dict-v4";
 
-      // עוד ביטויים נפוצים
-      { pattern: "אומלל", replacement: "מסכן", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "טינופת", replacement: "לכלוך", reason: "שפה שאינה מתאימה", category: "ביטוי" },
-      { pattern: "מגעיל", replacement: "לא נעים", reason: "שפה שאינה מתאימה", category: "ביטוי" },
-      { pattern: "דוחה", replacement: "לא נעים", reason: "שפה שאינה מתאימה", category: "ביטוי" },
-      { pattern: "בהמה", replacement: "גס רוח", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "טיפשה", replacement: "לא חכמה", reason: "מילת גנאי", category: "גנאי" },
-      { pattern: "טיפש", replacement: "לא חכם", reason: "מילת גנאי", category: "גנאי" }
-    ];
+let originalFileName = "";
+let originalContent   = "";
+let lastCensoredContent = "";
+let currentLogs   = [];
+let currentBlocks = [];
+let diffMode = false;
 
-    const STORAGE_KEY = "subtitle-censor-custom-dictionary-v2";
+// ════════════════════════════════════════
+// DOM REFS
+// ════════════════════════════════════════
+const fileInput     = document.getElementById("fileInput");
+const runBtn        = document.getElementById("runBtn");
+const downloadBtn   = document.getElementById("downloadBtn");
+const resetEditorBtn= document.getElementById("resetEditorBtn");
+const toggleViewBtn = document.getElementById("toggleViewBtn");
+const editor        = document.getElementById("editor");
+const diffView      = document.getElementById("diffView");
+const statusBar     = document.getElementById("statusBar");
+const fileNamePill  = document.getElementById("fileNamePill");
+const encBadge      = document.getElementById("encBadge");
+const statBlocks    = document.getElementById("statBlocks");
+const statChanges   = document.getElementById("statChanges");
+const statRules     = document.getElementById("statRules");
+const tcDict        = document.getElementById("tcDict");
+const tcReport      = document.getElementById("tcReport");
+const quickReport   = document.getElementById("quickReport");
+const dictBody      = document.getElementById("dictBody");
+const dictSearch    = document.getElementById("dictSearch");
+const dictCatFilter = document.getElementById("dictCatFilter");
+const dictCount     = document.getElementById("dictCount");
+const repBody       = document.getElementById("repBody");
+const repSearch     = document.getElementById("repSearch");
+const repCatFilter  = document.getElementById("repCatFilter");
+const repCount      = document.getElementById("repCount");
+const resetDictBtn  = document.getElementById("resetDictBtn");
+const addRuleBtn    = document.getElementById("addRuleBtn");
+const newOrig       = document.getElementById("newOrig");
+const newRepl       = document.getElementById("newRepl");
+const newCat        = document.getElementById("newCat");
+const newReason     = document.getElementById("newReason");
+const qAddBtn       = document.getElementById("qAddBtn");
+const qAddOrig      = document.getElementById("qAddOrig");
+const qAddRepl      = document.getElementById("qAddRepl");
+const qAddCat       = document.getElementById("qAddCat");
+const qAddReason    = document.getElementById("qAddReason");
+const grabSelBtn    = document.getElementById("grabSelBtn");
 
-    const fileInput = document.getElementById("fileInput");
-    const runBtn = document.getElementById("runBtn");
-    const downloadBtn = document.getElementById("downloadBtn");
-    const downloadDictBtn = document.getElementById("downloadDictBtn");
-    const clearCustomBtn = document.getElementById("clearCustomBtn");
-    const reparseBtn = document.getElementById("reparseBtn");
-    const resetEditorBtn = document.getElementById("resetEditorBtn");
-    const editor = document.getElementById("editor");
-    const logBody = document.getElementById("logBody");
-    const statusText = document.getElementById("statusText");
-    const filterInput = document.getElementById("filterInput");
-    const fileNamePill = document.getElementById("fileNamePill");
-    const manualOriginal = document.getElementById("manualOriginal");
-    const manualReplacement = document.getElementById("manualReplacement");
-    const manualReason = document.getElementById("manualReason");
-    const applyManualBtn = document.getElementById("applyManualBtn");
-    const grabSelectionBtn = document.getElementById("grabSelectionBtn");
-    const customDictView = document.getElementById("customDictView");
+// ════════════════════════════════════════
+// DICTIONARY LAYER
+// ════════════════════════════════════════
+function loadDict() {
+  try {
+    const raw = localStorage.getItem(DICT_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  // First run — seed from BUILTIN_RULES
+  const seed = BUILTIN_RULES.map(r => ({ ...r }));
+  _saveDict(seed);
+  return seed;
+}
 
-    const statBlocks = document.getElementById("statBlocks");
-    const statChanges = document.getElementById("statChanges");
-    const statRules = document.getElementById("statRules");
-    const statCustom = document.getElementById("statCustom");
+function _saveDict(rules) {
+  localStorage.setItem(DICT_KEY, JSON.stringify(rules));
+}
 
-    let originalFileName = "";
-    let originalContent = "";
-    let lastProcessedContent = "";
-    let currentLogs = [];
-    let currentBlocks = [];
+function saveDict(rules) {
+  _saveDict(rules);
+  updateStats();
+}
 
-    function escapeRegExp(str){
-      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    }
+function resetDict() {
+  if (!confirm("לאפס את כל המילון לברירת המחדל? שינויים שעשית יימחקו.")) return;
+  const seed = BUILTIN_RULES.map(r => ({ ...r }));
+  saveDict(seed);
+  renderDict();
+  if (originalContent) processContent(originalContent);
+  setStatus("המילון אופס לברירת המחדל.");
+}
 
-    function loadCustomRules(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      }catch{
-        return [];
-      }
-    }
+function addRule(pattern, replacement, category, reason) {
+  const p = (pattern || "").trim();
+  const r = (replacement || "").trim();
+  if (!p || !r) { alert("יש למלא שדות מקור והחלפה."); return false; }
+  const rules = loadDict();
+  const idx = rules.findIndex(x => x.pattern === p);
+  const payload = { pattern: p, replacement: r, category: category || "מותאם", reason: reason || "" };
+  if (idx >= 0) rules[idx] = payload; else rules.push(payload);
+  saveDict(rules);
+  return true;
+}
 
-    function saveCustomRules(rules){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(rules));
-      renderCustomDictionary();
-      updateStats();
-    }
+window.updateRuleField = function(realIdx, field, value) {
+  const rules = loadDict();
+  if (!rules[realIdx]) return;
+  rules[realIdx][field] = value;
+  _saveDict(rules);
+  updateStats();
+};
 
-    function getAllRules(){
-      const custom = loadCustomRules().map(rule => ({ ...rule, source: "מותאם אישית" }));
-      const builtin = BUILTIN_RULES.map(rule => ({ ...rule, source: "מובנה" }));
-      return [...builtin, ...custom].sort((a,b) => (b.pattern || "").length - (a.pattern || "").length);
-    }
+window.deleteRule = function(realIdx) {
+  if (!confirm("למחוק כלל זה מהמילון?")) return;
+  const rules = loadDict();
+  rules.splice(realIdx, 1);
+  saveDict(rules);
+  renderDict();
+  if (originalContent) processContent(originalContent);
+};
 
-    function addCustomRule(pattern, replacement, reason, category = "מותאם"){
-      const rules = loadCustomRules();
-      const normalizedPattern = (pattern || "").trim();
-      const normalizedReplacement = (replacement || "").trim();
-      if(!normalizedPattern || !normalizedReplacement){
-        alert("צריך למלא גם מקור וגם החלפה.");
-        return false;
-      }
-      const existingIndex = rules.findIndex(
-        item => item.pattern === normalizedPattern
-      );
-      const payload = {
-        pattern: normalizedPattern,
-        replacement: normalizedReplacement,
-        reason: reason || "תיקון ידני",
-        category
-      };
-      if(existingIndex >= 0){
-        rules[existingIndex] = payload;
-      }else{
-        rules.push(payload);
-      }
-      saveCustomRules(rules);
-      return true;
-    }
+// ════════════════════════════════════════
+// RENDERING — DICTIONARY
+// ════════════════════════════════════════
+const CATS = ["קללה","מיניות","גנאי","צניעות","דת","סלנג","אנגלית","אלימות","ביטוי","יחסים","מותאם"];
 
-    function updateStats(){
-      statBlocks.textContent = String(currentBlocks.length || 0);
-      statChanges.textContent = String(currentLogs.length || 0);
-      statRules.textContent = String(getAllRules().length);
-      statCustom.textContent = String(loadCustomRules().length);
-    }
+function renderDict() {
+  const rules   = loadDict();
+  const search  = (dictSearch.value || "").toLowerCase();
+  const catFlt  = dictCatFilter.value;
+  const filtered = rules
+    .map((r, i) => ({ r, i }))
+    .filter(({ r }) => {
+      const hay = [r.pattern, r.replacement, r.reason, r.category].join(" ").toLowerCase();
+      return (!search || hay.includes(search)) && (!catFlt || r.category === catFlt);
+    });
 
-    function renderCustomDictionary(){
-      const rules = loadCustomRules();
-      if(!rules.length){
-        customDictView.innerHTML = "אין עדיין כללים מותאמים אישית.";
-        return;
-      }
-      customDictView.innerHTML = rules.map((rule, idx) => `
-        <div style="padding:8px 0;border-bottom:1px solid #e5e7eb">
-          <strong>${escapeHtml(rule.pattern)}</strong> ← ${escapeHtml(rule.replacement)}
-          <div class="small">${escapeHtml(rule.reason || "")}</div>
-          <div style="margin-top:6px">
-            <button class="secondary" onclick="removeCustomRule(${idx})">מחק</button>
-          </div>
+  dictCount.textContent = `מציג ${filtered.length} מתוך ${rules.length} כללים`;
+
+  if (!filtered.length) {
+    dictBody.innerHTML = `<tr><td colspan="5" class="empty-state"><p>לא נמצאו כללים תואמים</p></td></tr>`;
+    return;
+  }
+
+  const catOptions = CATS.map(c => `<option>${h(c)}</option>`).join("");
+  dictBody.innerHTML = filtered.map(({ r, i }) => `
+    <tr>
+      <td><input class="dict-inp" value="${ha(r.pattern)}"     onchange="updateRuleField(${i},'pattern',this.value)"     /></td>
+      <td><input class="dict-inp" value="${ha(r.replacement)}" onchange="updateRuleField(${i},'replacement',this.value)" /></td>
+      <td>
+        <select class="dict-inp" onchange="updateRuleField(${i},'category',this.value)">
+          ${CATS.map(c => `<option${r.category===c?" selected":""}>${h(c)}</option>`).join("")}
+        </select>
+      </td>
+      <td><input class="dict-inp" value="${ha(r.reason||'')}" onchange="updateRuleField(${i},'reason',this.value)" placeholder="—" /></td>
+      <td style="text-align:center">
+        <button class="btn btn-danger btn-xs" onclick="deleteRule(${i})">🗑</button>
+      </td>
+    </tr>`).join("");
+}
+
+// ════════════════════════════════════════
+// RENDERING — REPORT
+// ════════════════════════════════════════
+function renderReport() {
+  const search  = (repSearch.value || "").toLowerCase();
+  const catFlt  = repCatFilter.value;
+  const filtered = currentLogs.filter(l => {
+    const hay = [l.original, l.replacement, l.reason, l.category, l.start, String(l.blockIndex)].join(" ").toLowerCase();
+    return (!search || hay.includes(search)) && (!catFlt || l.category === catFlt);
+  });
+
+  repCount.textContent = `מציג ${filtered.length} מתוך ${currentLogs.length} שינויים`;
+
+  if (!filtered.length) {
+    repBody.innerHTML = `<tr><td colspan="5" class="empty-state"><p>${currentLogs.length ? "לא נמצאו תוצאות" : "עוד לא בוצע עיבוד"}</p></td></tr>`;
+    return;
+  }
+
+  repBody.innerHTML = filtered.map((l, idx) => `
+    <tr>
+      <td>
+        <strong style="font-size:12px">בלוק ${h(String(l.blockIndex))}</strong><br>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">${h(l.start)}</span><br>
+        <span style="font-size:11px;color:var(--muted)">שורה ${h(String(l.textLineIndex))}</span>
+      </td>
+      <td>
+        <span style="color:var(--danger);font-weight:700">${h(l.original)}</span>
+        <span style="color:var(--muted);margin:0 5px;font-size:12px">→</span>
+        <span style="color:var(--success);font-weight:700">${h(l.replacement)}</span>
+      </td>
+      <td><span class="badge b-${h(l.category)}">${h(l.category)}</span></td>
+      <td style="font-size:12px;color:var(--ink-2)">${h(l.reason)}</td>
+      <td>
+        <div class="r-actions">
+          <button class="btn btn-ghost btn-xs" onclick="jumpToBlock('${js(l.start)}')">קפוץ</button>
+          <button class="btn btn-warning btn-xs" onclick="saveRepRule('${js(l.original)}','${js(l.replacement)}','${js(l.reason)}','${js(l.category)}')">שמור</button>
         </div>
-      `).join("");
+      </td>
+    </tr>`).join("");
+}
+
+function renderQuickReport() {
+  const N = 15;
+  if (!currentLogs.length) {
+    quickReport.innerHTML = `<div class="empty-state"><p>אין שינויים — לאחר עיבוד הרשימה תופיע כאן</p></div>`;
+    return;
+  }
+  const show = currentLogs.slice(0, N);
+  quickReport.innerHTML = show.map(l => `
+    <div class="qr-row">
+      <span class="qr-orig">${h(l.original)}</span>
+      <span class="qr-arrow">→</span>
+      <span class="qr-repl">${h(l.replacement)}</span>
+      <span class="qr-time">${h(l.start)}</span>
+    </div>`).join("") +
+    (currentLogs.length > N ? `<div style="padding:8px 0;text-align:center;font-size:12px;color:var(--muted)">+ ${currentLogs.length - N} שינויים נוספים בלשונית "דוח"</div>` : "");
+}
+
+// ════════════════════════════════════════
+// DIFF / HIGHLIGHT VIEW
+// ════════════════════════════════════════
+function buildHighlightedHtml(line, rules) {
+  const matches = [];
+  rules.forEach(rule => {
+    const re = buildBoundaryRegex(rule.pattern);
+    let m;
+    while ((m = re.exec(line)) !== null) {
+      matches.push({
+        prefixStart: m.index,
+        start: m.index + m[1].length,
+        end:   m.index + m[0].length,
+        prefix:  m[1],
+        original: m[2],
+        replacement: rule.replacement
+      });
     }
+  });
+  matches.sort((a, b) => a.start - b.start);
+  const deduped = [];
+  let lastEnd = 0;
+  for (const m of matches) {
+    if (m.start >= lastEnd) { deduped.push(m); lastEnd = m.end; }
+  }
+  let html = "", pos = 0;
+  for (const m of deduped) {
+    html += h(line.slice(pos, m.prefixStart));
+    html += h(m.prefix);
+    html += `<mark class="change-mark" title="מקור: ${h(m.original)}">${h(m.replacement)}</mark>`;
+    pos = m.end;
+  }
+  html += h(line.slice(pos));
+  return html;
+}
 
-    window.removeCustomRule = function(index){
-      const rules = loadCustomRules();
-      rules.splice(index, 1);
-      saveCustomRules(rules);
-      if(originalContent){
-        processContent(originalContent);
-      }
+function renderDiffView() {
+  if (!originalContent) return;
+  const rules = loadDict().sort((a, b) => (b.pattern||"").length - (a.pattern||"").length);
+  const blocks = parseSrt(originalContent);
+  const changedSet = new Set(currentLogs.map(l => l.blockIndex));
+
+  const html = blocks.map(block => {
+    const changed = changedSet.has(block.blockIndex);
+    const cls = changed ? "block-changed" : "";
+    const lineHtml = block.textLines.map(line =>
+      changed ? buildHighlightedHtml(line, rules) : h(line)
+    ).join("\n");
+    return `<span class="${cls}">${h(block.seq)}\n${h(block.timeLine)}\n${lineHtml}</span>`;
+  }).join("\n\n");
+
+  diffView.innerHTML = html;
+}
+
+// ════════════════════════════════════════
+// SRT PROCESSING
+// ════════════════════════════════════════
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function buildBoundaryRegex(pattern) {
+  const esc = escapeRegExp(pattern);
+  return new RegExp(`(^|[^\\p{L}\\p{N}_])(${esc})(?=$|[^\\p{L}\\p{N}_])`, "giu");
+}
+
+function parseSrt(text) {
+  const clean = text.replace(/\uFEFF/g, "").replace(/\r\n/g, "\n");
+  const chunks = clean.split(/\n{2,}/).filter(Boolean);
+  const blocks = [];
+  for (let i = 0; i < chunks.length; i++) {
+    const lines = chunks[i].split("\n");
+    if (lines.length < 2) continue;
+    let seq = lines[0].trim();
+    let timeLine = (lines[1] || "").trim();
+    let textLines = lines.slice(2);
+    if (!/^\d+$/.test(seq) && /^\d{2}:\d{2}:\d{2},\d{3}\s*-->\s*\d{2}:\d{2}:\d{2},\d{3}$/.test(seq)) {
+      timeLine = seq; seq = String(i + 1); textLines = lines.slice(1);
     }
+    if (!/^\d{2}:\d{2}:\d{2},\d{3}\s*-->\s*\d{2}:\d{2}:\d{2},\d{3}$/.test(timeLine)) continue;
+    const [start, end] = timeLine.split(/\s*-->\s*/);
+    blocks.push({ seq, blockIndex: i + 1, timeLine, start, end, textLines });
+  }
+  return blocks;
+}
 
-    function parseSrt(text){
-      const clean = text.replace(/\uFEFF/g, "").replace(/\r\n/g, "\n");
-      const chunks = clean.split(/\n{2,}/).filter(Boolean);
-      const blocks = [];
-      for(let i = 0; i < chunks.length; i++){
-        const lines = chunks[i].split("\n");
-        if(lines.length < 2) continue;
-        let seq = lines[0].trim();
-        let timeLine = lines[1]?.trim() || "";
-        let textLines = lines.slice(2);
+function stringifySrt(blocks) {
+  return blocks.map((b, i) => {
+    const seq = /^\d+$/.test(String(b.seq || "")) ? String(b.seq) : String(i + 1);
+    return [seq, b.timeLine, ...b.textLines].join("\n");
+  }).join("\n\n");
+}
 
-        if(!/^\d+$/.test(seq) && /^\d{2}:\d{2}:\d{2},\d{3}\s*-->\s*\d{2}:\d{2}:\d{2},\d{3}$/.test(seq)){
-          timeLine = seq;
-          seq = String(i + 1);
-          textLines = lines.slice(1);
-        }
-
-        if(!/^\d{2}:\d{2}:\d{2},\d{3}\s*-->\s*\d{2}:\d{2}:\d{2},\d{3}$/.test(timeLine)){
-          continue;
-        }
-
-        const [start, end] = timeLine.split(/\s*-->\s*/);
-        blocks.push({
-          seq,
-          blockIndex: i + 1,
-          timeLine,
-          start,
-          end,
-          textLines
-        });
-      }
-      return blocks;
-    }
-
-    function stringifySrt(blocks){
-      return blocks.map((block, idx) => {
-        const seq = /^\d+$/.test(String(block.seq || "")) ? String(block.seq) : String(idx + 1);
-        return [
-          seq,
-          block.timeLine,
-          ...block.textLines
-        ].join("\n");
-      }).join("\n\n");
-    }
-
-    function buildBoundaryRegex(pattern){
-      const escaped = escapeRegExp(pattern);
-      return new RegExp(`(^|[^\\p{L}\\p{N}_])(${escaped})(?=$|[^\\p{L}\\p{N}_])`, "giu");
-    }
-
-    function applyRulesToBlocks(blocks, rules){
-      const logs = [];
-      const updatedBlocks = blocks.map(block => ({
-        ...block,
-        textLines: [...block.textLines]
-      }));
-
-      updatedBlocks.forEach(block => {
-        block.textLines = block.textLines.map((line, textLineIndex) => {
-          let newLine = line;
-          rules.forEach(rule => {
-            const regex = buildBoundaryRegex(rule.pattern);
-            newLine = newLine.replace(regex, (full, prefix, match, offset) => {
-              logs.push({
-                blockIndex: block.blockIndex,
-                seq: block.seq,
-                start: block.start,
-                end: block.end,
-                original: match,
-                replacement: rule.replacement,
-                reason: rule.reason,
-                category: rule.category,
-                source: rule.source,
-                textLineIndex: textLineIndex + 1
-              });
-              return `${prefix}${rule.replacement}`;
-            });
+function applyRulesToBlocks(blocks, rules) {
+  const logs = [];
+  const updated = blocks.map(b => ({ ...b, textLines: [...b.textLines] }));
+  updated.forEach(block => {
+    block.textLines = block.textLines.map((line, li) => {
+      let out = line;
+      rules.forEach(rule => {
+        const re = buildBoundaryRegex(rule.pattern);
+        out = out.replace(re, (full, prefix, match) => {
+          logs.push({
+            blockIndex: block.blockIndex,
+            seq: block.seq,
+            start: block.start,
+            end: block.end,
+            original: match,
+            replacement: rule.replacement,
+            reason: rule.reason,
+            category: rule.category,
+            textLineIndex: li + 1
           });
-          return newLine;
+          return `${prefix}${rule.replacement}`;
         });
       });
+      return out;
+    });
+  });
+  return { updatedBlocks: updated, logs };
+}
 
-      return { updatedBlocks, logs };
-    }
-
-    function processContent(content){
-      const parsedBlocks = parseSrt(content);
-      currentBlocks = parsedBlocks;
-      const rules = getAllRules();
-      const result = applyRulesToBlocks(parsedBlocks, rules);
-      currentLogs = result.logs;
-      const output = stringifySrt(result.updatedBlocks);
-
-      lastProcessedContent = output;
-      editor.value = output;
-      downloadBtn.disabled = false;
-      resetEditorBtn.disabled = false;
-      reparseBtn.disabled = false;
-
-      renderLogs(currentLogs);
-      updateStats();
-
-      statusText.textContent = currentLogs.length
-        ? `בוצע עיבוד. נמצאו ${currentLogs.length} החלפות על פני ${parsedBlocks.length} בלוקים.`
-        : `בוצע עיבוד. לא נמצאו מילים שהוגדרו לצנזור.`;
-    }
-
-    function renderLogs(logs){
-      const filter = filterInput.value.trim();
-      const filtered = !filter ? logs : logs.filter(log => {
-        const hay = [
-          log.blockIndex, log.seq, log.start, log.end, log.original, log.replacement, log.reason, log.category, log.source
-        ].join(" ").toLowerCase();
-        return hay.includes(filter.toLowerCase());
-      });
-
-      if(!filtered.length){
-        logBody.innerHTML = `<tr><td colspan="6" class="small">אין נתונים להצגה.</td></tr>`;
+// ════════════════════════════════════════
+// ENCODING DETECTION
+// ════════════════════════════════════════
+async function readFileAutoEncoding(file) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const buffer = e.target.result;
+      const bytes  = new Uint8Array(buffer);
+      const hasBOM = bytes[0] === 0xEF && bytes[1] === 0xBB && bytes[2] === 0xBF;
+      // 1) Try strict UTF-8
+      try {
+        const dec  = new TextDecoder("utf-8", { fatal: true });
+        const text = dec.decode(buffer);
+        resolve({ text, encoding: hasBOM ? "UTF-8 עם BOM" : "UTF-8" });
         return;
-      }
-
-      logBody.innerHTML = filtered.map((log, idx) => {
-        return `
-          <tr>
-            <td>
-              <strong>בלוק ${escapeHtml(String(log.blockIndex))}</strong><br>
-              <span class="small">${escapeHtml(log.start)}</span><br>
-              <span class="small">שורת טקסט ${escapeHtml(String(log.textLineIndex))}</span>
-            </td>
-            <td>${escapeHtml(log.original)}</td>
-            <td>
-              <input type="text" id="replacement_${idx}" value="${escapeAttr(log.replacement)}" />
-            </td>
-            <td>
-              <span class="badge">${escapeHtml(log.category)}</span><br>
-              <span class="small">${escapeHtml(log.source)}</span>
-            </td>
-            <td class="reason">${escapeHtml(log.reason)}</td>
-            <td>
-              <div class="log-actions">
-                <button class="secondary" onclick="jumpToTime('${escapeJs(log.start)}')">קפוץ</button>
-                <button class="warning" onclick="saveLogRule(${idx}, '${escapeJs(log.original)}', '${escapeJs(log.reason)}', '${escapeJs(log.category)}')">שמור למילון</button>
-              </div>
-            </td>
-          </tr>
-        `;
-      }).join("");
-    }
-
-    window.saveLogRule = function(visibleIndex, original, reason, category){
-      const filtered = !filterInput.value.trim()
-        ? currentLogs
-        : currentLogs.filter(log => {
-            const hay = [
-              log.blockIndex, log.seq, log.start, log.end, log.original, log.replacement, log.reason, log.category, log.source
-            ].join(" ").toLowerCase();
-            return hay.includes(filterInput.value.trim().toLowerCase());
-          });
-
-      const item = filtered[visibleIndex];
-      if(!item) return;
-
-      const input = document.getElementById(`replacement_${visibleIndex}`);
-      const replacement = (input?.value || "").trim();
-      if(!replacement){
-        alert("יש להזין החלפה.");
+      } catch {}
+      // 2) Try Windows-1255 (Hebrew legacy)
+      try {
+        const dec  = new TextDecoder("windows-1255");
+        const text = dec.decode(buffer);
+        resolve({ text, encoding: "Windows-1255" });
         return;
-      }
+      } catch {}
+      // 3) Permissive UTF-8 fallback
+      resolve({ text: new TextDecoder("utf-8", { fatal: false }).decode(buffer), encoding: "UTF-8 (תיקון)" });
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
 
-      const ok = addCustomRule(original, replacement, reason, category);
-      if(ok && originalContent){
-        processContent(originalContent);
-        statusText.textContent = `הכלל "${original} → ${replacement}" נשמר למילון והעיבוד רץ מחדש.`;
-      }
-    }
+// ════════════════════════════════════════
+// MAIN PROCESS FLOW
+// ════════════════════════════════════════
+function processContent(content) {
+  const parsed = parseSrt(content);
+  currentBlocks = parsed;
+  const rules   = loadDict().sort((a, b) => (b.pattern || "").length - (a.pattern || "").length);
+  const { updatedBlocks, logs } = applyRulesToBlocks(parsed, rules);
+  currentLogs = logs;
+  const output = stringifySrt(updatedBlocks);
+  lastCensoredContent = output;
+  editor.value = output;
+  downloadBtn.disabled  = false;
+  resetEditorBtn.disabled = false;
+  if (diffMode) renderDiffView();
+  updateStats();
+  renderReport();
+  renderQuickReport();
+  setStatus(
+    logs.length
+      ? `✔ עיבוד הושלם — ${logs.length} שינויים ב-${parsed.length} בלוקים.`
+      : `✔ עיבוד הושלם — לא נמצאו מילים לצנזור ב-${parsed.length} בלוקים.`
+  );
+}
 
-    window.jumpToTime = function(time){
-      const text = editor.value;
-      const index = text.indexOf(time);
-      if(index >= 0){
-        editor.focus();
-        editor.setSelectionRange(index, Math.min(index + 80, text.length));
-        statusText.textContent = `קפיצה לבלוק שמתחיל ב-${time}.`;
-      }
-    }
+function updateStats() {
+  const n = loadDict().length;
+  statBlocks.textContent  = String(currentBlocks.length);
+  statChanges.textContent = String(currentLogs.length);
+  statRules.textContent   = String(n);
+  tcDict.textContent      = String(n);
+  tcReport.textContent    = String(currentLogs.length);
+}
 
-    function detectEditorDifferences(){
-      const custom = loadCustomRules();
-      const text = editor.value;
-      const processedBlocks = parseSrt(lastProcessedContent);
-      const editedBlocks = parseSrt(text);
+function setStatus(msg) { statusBar.textContent = msg; }
 
-      if(processedBlocks.length !== editedBlocks.length){
-        statusText.textContent = "בוצעה עריכה שמשנה את מבנה הבלוקים. הייצוא יעבוד, אבל זיהוי חכם של תיקונים ידניים מוגבל.";
-        return;
-      }
+// ════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════
+function h(s)  { return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+function ha(s) { return h(s).replace(/\n/g,"&#10;"); }
+function js(s) { return String(s ?? "").replace(/\\/g,"\\\\").replace(/'/g,"\\'"); }
 
-      const suggestions = [];
-      for(let i = 0; i < processedBlocks.length; i++){
-        const a = processedBlocks[i].textLines.join(" ");
-        const b = editedBlocks[i].textLines.join(" ");
-        if(a !== b){
-          suggestions.push({
-            blockIndex: processedBlocks[i].blockIndex,
-            start: processedBlocks[i].start,
-            before: a,
-            after: b
-          });
-        }
-      }
+// ════════════════════════════════════════
+// WINDOW-LEVEL CALLBACKS (from HTML)
+// ════════════════════════════════════════
+window.jumpToBlock = function(time) {
+  switchTab("editor");
+  const text  = editor.value;
+  const index = text.indexOf(time);
+  if (index >= 0) {
+    editor.focus();
+    editor.setSelectionRange(index, Math.min(index + 80, text.length));
+    editor.scrollTop = (index / text.length) * editor.scrollHeight;
+    setStatus(`קפיצה לבלוק — ${time}`);
+  }
+};
 
-      if(!suggestions.length){
-        statusText.textContent = "לא נמצאו שינויים ידניים ביחס לגרסה המצונזרת האחרונה.";
-      }else{
-        statusText.textContent = `זוהו ${suggestions.length} בלוקים שנערכו ידנית. אם זו החלפה קבועה, שמור אותה למילון דרך הטופס למטה.`;
-      }
-    }
-
-    function downloadText(filename, text, mime){
-      const blob = new Blob([text], { type: mime });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    }
-
-    function escapeHtml(str){
-      return String(str ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
-    }
-
-    function escapeAttr(str){
-      return escapeHtml(str);
-    }
-
-    function escapeJs(str){
-      return String(str ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-    }
-
-    fileInput.addEventListener("change", (e) => {
-      const file = e.target.files?.[0];
-      if(!file) return;
-      originalFileName = file.name;
-      fileNamePill.textContent = file.name;
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        originalContent = String(evt.target?.result || "");
-        runBtn.disabled = false;
-        processContent(originalContent);
-      };
-      reader.readAsText(file, "utf-8");
-    });
-
-    runBtn.addEventListener("click", () => {
-      if(!originalContent) return;
-      processContent(originalContent);
-    });
-
-    downloadBtn.addEventListener("click", () => {
-      if(!editor.value.trim()) return;
-      const outName = originalFileName
-        ? originalFileName.replace(/\.srt$/i, "_clean.srt")
-        : "subtitles_clean.srt";
-      downloadText(outName, editor.value.replace(/\r?\n/g, "\r\n"), "text/plain;charset=utf-8");
-      statusText.textContent = `הקובץ יוצא בשם ${outName}.`;
-    });
-
-    downloadDictBtn.addEventListener("click", () => {
-      const json = JSON.stringify(loadCustomRules(), null, 2);
-      downloadText("custom_dictionary.json", json, "application/json;charset=utf-8");
-    });
-
-    clearCustomBtn.addEventListener("click", () => {
-      if(!confirm("למחוק את כל המילון המותאם אישית?")) return;
-      localStorage.removeItem(STORAGE_KEY);
-      renderCustomDictionary();
-      updateStats();
-      if(originalContent){
-        processContent(originalContent);
-      }
-      statusText.textContent = "המילון המותאם נוקה.";
-    });
-
-    applyManualBtn.addEventListener("click", () => {
-      const original = manualOriginal.value.trim();
-      const replacement = manualReplacement.value.trim();
-      const reason = manualReason.value;
-      if(!original || !replacement){
-        alert("צריך למלא גם מקור וגם החלפה.");
-        return;
-      }
-
-      const ok = addCustomRule(original, replacement, reason, "מותאם");
-      if(ok){
-        manualOriginal.value = "";
-        manualReplacement.value = "";
-        if(originalContent){
-          processContent(originalContent);
-        }else if(editor.value.trim()){
-          const regex = buildBoundaryRegex(original);
-          editor.value = editor.value.replace(regex, (full, prefix) => `${prefix}${replacement}`);
-        }
-        statusText.textContent = `הכלל "${original} → ${replacement}" נוסף למילון.`;
-      }
-    });
-
-    grabSelectionBtn.addEventListener("click", () => {
-      const start = editor.selectionStart;
-      const end = editor.selectionEnd;
-      const selected = editor.value.slice(start, end).trim();
-      if(!selected){
-        alert("סמן קודם מילה או ביטוי בתוך העורך.");
-        return;
-      }
-      manualOriginal.value = selected;
-      statusText.textContent = `הטקסט "${selected}" נלקח מהעורך.`;
-    });
-
-    filterInput.addEventListener("input", () => renderLogs(currentLogs));
-
-    reparseBtn.addEventListener("click", detectEditorDifferences);
-
-    resetEditorBtn.addEventListener("click", () => {
-      editor.value = lastProcessedContent;
-      statusText.textContent = "העורך הוחזר לגרסה המצונזרת האחרונה.";
-    });
-
-    renderCustomDictionary();
+window.saveRepRule = function(original, replacement, reason, category) {
+  const ok = addRule(original, replacement, category, reason);
+  if (ok) {
+    renderDict();
     updateStats();
-  </script>
+    setStatus(`הכלל "${original} → ${replacement}" נשמר למילון.`);
+  }
+};
+
+// ════════════════════════════════════════
+// TAB NAVIGATION
+// ════════════════════════════════════════
+function switchTab(tabName) {
+  document.querySelectorAll(".tab-btn").forEach(btn =>
+    btn.classList.toggle("active", btn.dataset.tab === tabName));
+  document.querySelectorAll(".tab-panel").forEach(panel =>
+    panel.classList.toggle("active", panel.id === `panel-${tabName}`));
+  if (tabName === "dict")   renderDict();
+  if (tabName === "report") renderReport();
+}
+
+document.querySelectorAll(".tab-btn").forEach(btn =>
+  btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
+
+// ════════════════════════════════════════
+// EVENT LISTENERS
+// ════════════════════════════════════════
+
+// File upload
+fileInput.addEventListener("change", async e => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  originalFileName = file.name;
+  fileNamePill.textContent = file.name;
+  const { text, encoding } = await readFileAutoEncoding(file);
+  originalContent = text;
+  encBadge.textContent  = encoding;
+  encBadge.style.display = "inline-block";
+  runBtn.disabled = false;
+  processContent(originalContent);
+});
+
+// Re-censor
+runBtn.addEventListener("click", () => {
+  if (originalContent) processContent(originalContent);
+});
+
+// Export SRT
+downloadBtn.addEventListener("click", () => {
+  if (!editor.value.trim()) return;
+  const name = originalFileName
+    ? originalFileName.replace(/\.srt$/i, "_clean.srt")
+    : "subtitles_clean.srt";
+  const blob = new Blob(
+    [editor.value.replace(/\r?\n/g, "\r\n")],
+    { type: "text/plain;charset=utf-8" }
+  );
+  const url = URL.createObjectURL(blob);
+  const a   = Object.assign(document.createElement("a"), { href: url, download: name });
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  setStatus(`הקובץ יוצא: ${name}`);
+});
+
+// Reset editor to last censored
+resetEditorBtn.addEventListener("click", () => {
+  editor.value = lastCensoredContent;
+  setStatus("העורך הוחזר לגרסה המצונזרת האחרונה.");
+});
+
+// Toggle diff view
+toggleViewBtn.addEventListener("click", () => {
+  diffMode = !diffMode;
+  if (diffMode) {
+    renderDiffView();
+    editor.style.display   = "none";
+    diffView.style.display = "block";
+    toggleViewBtn.textContent = "✏️ מצב עריכה";
+    resetEditorBtn.disabled   = true;
+  } else {
+    editor.style.display   = "block";
+    diffView.style.display = "none";
+    toggleViewBtn.textContent = "👁 הצג שינויים מסומנים";
+    resetEditorBtn.disabled   = !lastCensoredContent;
+  }
+});
+
+// Quick add from editor tab
+qAddBtn.addEventListener("click", () => {
+  const ok = addRule(qAddOrig.value, qAddRepl.value, qAddCat.value, qAddReason.value);
+  if (ok) {
+    qAddOrig.value = ""; qAddRepl.value = ""; qAddReason.value = "";
+    renderDict(); updateStats();
+    if (originalContent) processContent(originalContent);
+    setStatus("הכלל נוסף למילון ועיבוד רץ מחדש.");
+  }
+});
+
+// Grab selection from editor
+grabSelBtn.addEventListener("click", () => {
+  if (diffMode) { alert("עבור למצב עריכה כדי לסמן טקסט."); return; }
+  const sel = editor.value.slice(editor.selectionStart, editor.selectionEnd).trim();
+  if (!sel) { alert("סמן תחילה מילה בתוך העורך."); return; }
+  qAddOrig.value = sel;
+  setStatus(`"${sel}" נלקח מהעורך — הזן החלפה ולחץ "הוסף למילון".`);
+});
+
+// Dict tab: add rule
+addRuleBtn.addEventListener("click", () => {
+  const ok = addRule(newOrig.value, newRepl.value, newCat.value, newReason.value);
+  if (ok) {
+    newOrig.value = ""; newRepl.value = ""; newReason.value = "";
+    renderDict(); updateStats();
+    if (originalContent) processContent(originalContent);
+    setStatus("הכלל נוסף למילון.");
+  }
+});
+
+// Dict tab: reset
+resetDictBtn.addEventListener("click", resetDict);
+
+// Filters
+dictSearch.addEventListener("input",    renderDict);
+dictCatFilter.addEventListener("change",renderDict);
+repSearch.addEventListener("input",     renderReport);
+repCatFilter.addEventListener("change", renderReport);
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+loadDict();
+updateStats();
+renderDict();
+</script>
 </body>
 </html>
